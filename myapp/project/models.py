@@ -13,4 +13,27 @@ def create_auth_token(sender, instance=None, created=False, **kwargs):
 
 
 class CustomUser(User):
-    status = models.CharField(max_length=20)
+    status = models.CharField(max_length=20)  # 1 - manager    # 2 - teacher    # 3 - student
+    photo = models.ImageField(upload_to='images')
+
+
+# related_name - երը գրել
+
+class Course(models.Model):
+    name = models.CharField(max_length=100)
+
+
+class Module(models.Model):
+    name = models.CharField(max_length=100)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+
+
+class Group(models.Model):
+    name = models.CharField(max_length=100)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    module = models.ForeignKey(Module, on_delete=models.CASCADE)
+    teacher = models.ForeignKey(User, on_delete=models.CASCADE)
+
+# class StudentGroup(models.Model):
+#     student = models.ForeignKey(User, on_delete=models.CASCADE)
+#     group = models.ForeignKey(Group, on_delete=models.CASCADE)
